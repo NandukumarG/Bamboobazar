@@ -1,0 +1,450 @@
+:root {
+  --color-primary: #6B7A3D;
+  --color-primary-deep: #3F4A24;
+  --color-gold: #C9A227;
+  --color-warm: #D8B56A;
+  --color-ivory: #F7F3E8;
+  --color-surface: #FFFDF7;
+  --color-text: #292B22;
+  --color-muted: #73766A;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0 0 1.25rem;
+}
+
+h2 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+  color: var(--color-primary-deep);
+}
+
+/* ---------- Auth page ---------- */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, var(--color-ivory), var(--color-surface));
+  padding: 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 360px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-warm);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 12px 32px rgba(41, 43, 34, 0.08);
+}
+
+.auth-card h1 {
+  font-size: 1.25rem;
+  color: var(--color-primary-deep);
+}
+
+.auth-subtitle {
+  color: var(--color-muted);
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- Admin shell layout ---------- */
+
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--color-primary-deep);
+  color: var(--color-ivory);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-sidebar__brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-nav__link {
+  color: var(--color-ivory);
+  text-decoration: none;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  opacity: 0.85;
+  font-size: 0.92rem;
+}
+
+.admin-nav__link:hover {
+  opacity: 1;
+  background: rgba(247, 243, 232, 0.08);
+}
+
+.admin-nav__link.is-active {
+  background: var(--color-primary);
+  opacity: 1;
+  font-weight: 600;
+}
+
+.admin-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-warm);
+  background: var(--color-surface);
+}
+
+.admin-content {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-ivory);
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-primary-deep);
+  border-color: var(--color-warm);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--color-ivory);
+}
+
+.btn-danger {
+  background: transparent;
+  color: #a13d3d;
+  border-color: #a13d3d;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(161, 61, 61, 0.08);
+}
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+}
+
+/* ---------- Forms ---------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-primary-deep);
+}
+
+.field input,
+.field select,
+.field textarea {
+  font: inherit;
+  font-weight: 400;
+  color: var(--color-text);
+  border: 1px solid var(--color-warm);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  background: var(--color-surface);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.form-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-warm);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 720px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0 1.5rem;
+}
+
+.form-actions {
+  margin-top: 0.5rem;
+}
+
+/* ---------- Tables ---------- */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-warm);
+  border-radius: 12px;
+  background: var(--color-surface);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-ivory);
+  white-space: nowrap;
+}
+
+th {
+  color: var(--color-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+/* ---------- Badges ---------- */
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: rgba(107, 122, 61, 0.15);
+  color: var(--color-primary-deep);
+}
+
+.badge-muted {
+  background: rgba(115, 118, 106, 0.15);
+  color: var(--color-muted);
+}
+
+.badge-status-pending {
+  background: rgba(201, 162, 39, 0.18);
+  color: #8a6d13;
+}
+
+.badge-status-paid {
+  background: rgba(107, 122, 61, 0.18);
+  color: var(--color-primary-deep);
+}
+
+.badge-status-shipped {
+  background: rgba(63, 74, 36, 0.15);
+  color: var(--color-primary-deep);
+}
+
+.badge-status-delivered {
+  background: rgba(107, 122, 61, 0.25);
+  color: var(--color-primary-deep);
+}
+
+.badge-status-cancelled {
+  background: rgba(161, 61, 61, 0.15);
+  color: #a13d3d;
+}
+
+/* ---------- Alerts ---------- */
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.88rem;
+}
+
+.alert ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.alert-error {
+  background: rgba(161, 61, 61, 0.1);
+  color: #a13d3d;
+  border: 1px solid rgba(161, 61, 61, 0.3);
+}
+
+/* ---------- Dashboard ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-warm);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.stat-card__label {
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.stat-card__value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-primary-deep);
+}
+
+/* ---------- Order detail ---------- */
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-warm);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.order-summary {
+  margin-top: 1rem;
+  max-width: 320px;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.order-summary > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-summary__total {
+  font-weight: 700;
+  font-size: 1rem;
+  border-top: 1px solid var(--color-ivory);
+  padding-top: 0.5rem;
+  color: var(--color-primary-deep);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 720px) {
+  .admin-shell {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+
+  .admin-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .admin-content {
+    padding: 1rem;
+  }
+}
