@@ -68,6 +68,11 @@ function OrderDetailPage() {
           </select>
 
           <h2>Payment</h2>
+          <p>
+            <span className={`badge badge-method-${order.payment_method.toLowerCase()}`}>
+              {order.payment_method === 'COD' ? 'Cash on Delivery' : 'Online'}
+            </span>
+          </p>
           {order.payment ? (
             <p>
               <span className={`badge badge-status-${order.payment.status.toLowerCase()}`}>
@@ -75,6 +80,8 @@ function OrderDetailPage() {
               </span>{' '}
               — {formatCurrency(order.payment.amount)}
             </p>
+          ) : order.payment_method === 'COD' ? (
+            <p>Collected in cash on delivery.</p>
           ) : (
             <p>No payment recorded yet.</p>
           )}

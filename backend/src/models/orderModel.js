@@ -3,9 +3,9 @@ const pool = require('../config/db')
 const createOrder = async (order, client = pool) => {
   const result = await client.query(
     `INSERT INTO orders
-      (user_id, order_number, subtotal, shipping, total, status,
+      (user_id, order_number, subtotal, shipping, total, status, payment_method,
        customer_name, phone, email, address, city, state, pincode)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
      RETURNING *`,
     [
       order.userId,
@@ -14,6 +14,7 @@ const createOrder = async (order, client = pool) => {
       order.shipping,
       order.total,
       order.status,
+      order.paymentMethod,
       order.customerName,
       order.phone,
       order.email,

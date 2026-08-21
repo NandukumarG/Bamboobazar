@@ -10,6 +10,7 @@ const SHIPPING_FLAT_RATE = 0
 const createOrder = async ({
   userId,
   items,
+  paymentMethod = 'ONLINE',
   customerName,
   phone,
   email,
@@ -60,6 +61,7 @@ const createOrder = async ({
         shipping,
         total,
         status: 'PENDING',
+        paymentMethod,
         customerName,
         phone,
         email,

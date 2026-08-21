@@ -85,6 +85,8 @@ CREATE TABLE orders (
   total          NUMERIC(10, 2) NOT NULL CHECK (total >= 0),
   status         VARCHAR(20) NOT NULL DEFAULT 'PENDING'
                  CHECK (status IN ('PENDING', 'PAID', 'CANCELLED', 'SHIPPED', 'DELIVERED')),
+  payment_method VARCHAR(20) NOT NULL DEFAULT 'ONLINE'
+                 CHECK (payment_method IN ('ONLINE', 'COD')),
   customer_name  VARCHAR(150) NOT NULL,
   phone          VARCHAR(20) NOT NULL,
   email          VARCHAR(255) NOT NULL,

@@ -21,6 +21,7 @@ function CheckoutPage() {
     state: '',
     pincode: '',
   })
+  const [paymentMethod, setPaymentMethod] = useState('ONLINE')
   const [error, setError] = useState('')
   const [errors, setErrors] = useState([])
   const [submitting, setSubmitting] = useState(false)
@@ -48,6 +49,7 @@ function CheckoutPage() {
       // price and stock in PostgreSQL and computes the total itself.
       const order = await orderService.createOrder({
         items: items.map((item) => ({ productId: item.productId, quantity: item.quantity })),
+        paymentMethod,
         customerName: form.name,
         email: form.email,
         phone: form.phone,
@@ -126,6 +128,36 @@ function CheckoutPage() {
             <span>Address</span>
             <textarea rows={3} value={form.address} onChange={handleChange('address')} required />
           </label>
+
+          <fieldset className="payment-method">
+            <legend>Payment Method</legend>
+            <label className="payment-method__option">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="ONLINE"
+                checked={paymentMethod === 'ONLINE'}
+                onChange={() => setPaymentMethod('ONLINE')}
+              />
+              <span>
+                <strong>Pay Online</strong>
+                <small>Cards, UPI, netbanking via Razorpay</small>
+              </span>
+            </label>
+            <label className="payment-method__option">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="COD"
+                checked={paymentMethod === 'COD'}
+                onChange={() => setPaymentMethod('COD')}
+              />
+              <span>
+                <strong>Cash on Delivery</strong>
+                <small>Pay in cash when your order arrives</small>
+              </span>
+            </label>
+          </fieldset>
 
           <div className="form-actions">
             <button type="submit" className="btn btn-primary" disabled={submitting}>

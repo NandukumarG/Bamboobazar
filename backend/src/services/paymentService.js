@@ -46,6 +46,9 @@ const createRazorpayOrder = async ({ orderId, user }) => {
 
   const order = await getOwnedOrder(orderId, user)
 
+  if (order.payment_method === 'COD') {
+    throw new ApiError(400, 'This order is Cash on Delivery and does not require online payment')
+  }
   if (order.status === 'PAID') {
     throw new ApiError(409, 'This order has already been paid')
   }

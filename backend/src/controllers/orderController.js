@@ -5,8 +5,11 @@ const orderService = require('../services/orderService')
 const orderModel = require('../models/orderModel')
 const orderItemModel = require('../models/orderItemModel')
 
+const PAYMENT_METHODS = ['ONLINE', 'COD']
+
 const createOrder = asyncHandler(async (req, res) => {
-  const { items, customerName, phone, email, address, city, state, pincode } = req.body
+  const { items, paymentMethod = 'ONLINE', customerName, phone, email, address, city, state, pincode } =
+    req.body
   const errors = []
 
   if (!Array.isArray(items) || items.length === 0) {
@@ -21,6 +24,9 @@ const createOrder = asyncHandler(async (req, res) => {
       }
     })
   }
+  if (!PAYMENT_METHODS.includes(paymentMethod)) {
+    errors.push(`paymentMethod must be one of ${PAYMENT_METHODS.join(', ')}`)
+  }
   if (!isNonEmptyString(customerName)) errors.push('customerName is required')
   if (!isNonEmptyString(phone)) errors.push('phone is required')
   if (!isValidEmail(email)) errors.push('a valid email is required')
@@ -34,6 +40,7 @@ const createOrder = asyncHandler(async (req, res) => {
   const order = await orderService.createOrder({
     userId: req.user.id,
     items,
+    paymentMethod,
     customerName,
     phone,
     email,

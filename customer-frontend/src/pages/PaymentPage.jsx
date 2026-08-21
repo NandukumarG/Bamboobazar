@@ -112,6 +112,30 @@ function PaymentPage() {
     )
   }
 
+  if (order.payment_method === 'COD') {
+    return (
+      <div className="page">
+        <h1>Order Confirmed</h1>
+        <div className="card">
+          <div className="alert alert-success">Cash on Delivery</div>
+          <p>
+            Order Number: <strong>{order.order_number}</strong>
+          </p>
+          <p>
+            Amount to pay on delivery: <strong>{formatCurrency(order.total)}</strong>
+          </p>
+          <p className="page-subtitle">
+            Please keep the exact amount ready — payment is collected in cash when your order
+            arrives.
+          </p>
+          <Link to="/products" className="btn btn-primary">
+            Continue shopping
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="page">
       <h1>Payment</h1>

@@ -32,6 +32,7 @@ function OrdersListPage() {
                 <th>Order #</th>
                 <th>Customer</th>
                 <th>Total</th>
+                <th>Payment</th>
                 <th>Status</th>
                 <th>Placed</th>
                 <th>Action</th>
@@ -43,6 +44,11 @@ function OrdersListPage() {
                   <td>{order.order_number}</td>
                   <td>{order.customer_name}</td>
                   <td>{formatCurrency(order.total)}</td>
+                  <td>
+                    <span className={`badge badge-method-${order.payment_method.toLowerCase()}`}>
+                      {order.payment_method === 'COD' ? 'Cash on Delivery' : 'Online'}
+                    </span>
+                  </td>
                   <td>
                     <span className={`badge badge-status-${order.status.toLowerCase()}`}>
                       {order.status}
@@ -58,7 +64,7 @@ function OrdersListPage() {
               ))}
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan={6}>No orders yet.</td>
+                  <td colSpan={7}>No orders yet.</td>
                 </tr>
               )}
             </tbody>

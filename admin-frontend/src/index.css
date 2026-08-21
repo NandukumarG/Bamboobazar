@@ -332,6 +332,16 @@ tbody tr:last-child td {
   color: #a13d3d;
 }
 
+.badge-method-online {
+  background: rgba(63, 74, 36, 0.12);
+  color: var(--color-primary-deep);
+}
+
+.badge-method-cod {
+  background: rgba(216, 181, 106, 0.28);
+  color: #6b5410;
+}
+
 /* ---------- Alerts ---------- */
 
 .alert {

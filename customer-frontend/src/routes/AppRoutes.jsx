@@ -11,6 +11,7 @@ import ProductDetailPage from '../pages/ProductDetailPage'
 import CartPage from '../pages/CartPage'
 import CheckoutPage from '../pages/CheckoutPage'
 import PaymentPage from '../pages/PaymentPage'
+import ProfilePage from '../pages/ProfilePage'
 
 function AppRoutes() {
   return (
@@ -28,6 +29,7 @@ function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Route>
 

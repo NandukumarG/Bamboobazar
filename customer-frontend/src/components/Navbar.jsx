@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 
 function Navbar() {
-  const { isAuthenticated, user, logout } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const { items } = useCart()
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -82,17 +82,12 @@ function Navbar() {
             </button>
 
             {isAuthenticated ? (
-              <div className="navbar__user">
-                <span className="navbar__icon-link" title={user?.name}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                    <circle cx="12" cy="8" r="3.5" />
-                    <path d="M4.5 20c1.4-3.6 4.4-5.5 7.5-5.5s6.1 1.9 7.5 5.5" />
-                  </svg>
-                </span>
-                <button type="button" className="btn btn-ghost btn-sm" onClick={logout}>
-                  Logout
-                </button>
-              </div>
+              <Link to="/profile" className="navbar__icon-link" title={user?.name || 'Profile'}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <circle cx="12" cy="8" r="3.5" />
+                  <path d="M4.5 20c1.4-3.6 4.4-5.5 7.5-5.5s6.1 1.9 7.5 5.5" />
+                </svg>
+              </Link>
             ) : (
               <Link to="/login" className="navbar__icon-link" title="Sign in">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
