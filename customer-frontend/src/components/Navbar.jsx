@@ -1,13 +1,24 @@
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 
 function Navbar() {
   const { isAuthenticated, user, logout } = useAuth()
   const { items } = useCart()
+  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [query, setQuery] = useState('')
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault()
+    const trimmed = query.trim()
+    navigate(trimmed ? `/products?search=${encodeURIComponent(trimmed)}` : '/products')
+    setSearchOpen(false)
+    setMenuOpen(false)
+  }
 
   return (
     <>
@@ -34,7 +45,42 @@ function Navbar() {
             </a>
           </nav>
 
+          <form
+            className={`navbar__search${searchOpen ? ' is-open' : ''}`}
+            role="search"
+            onSubmit={handleSearchSubmit}
+          >
+            <input
+              type="search"
+              placeholder="Search bamboo products..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              aria-label="Search products"
+            />
+            <button type="submit" className="navbar__search-submit" aria-label="Search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+            </button>
+          </form>
+
           <div className="navbar__actions">
+            <button
+              type="button"
+              className="navbar__search-toggle"
+              aria-label="Toggle search"
+              onClick={() => {
+                setSearchOpen((open) => !open)
+                setMenuOpen(false)
+              }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+            </button>
+
             {isAuthenticated ? (
               <div className="navbar__user">
                 <span className="navbar__icon-link" title={user?.name}>
@@ -68,7 +114,10 @@ function Navbar() {
               type="button"
               className="navbar__menu-toggle"
               aria-label="Toggle menu"
-              onClick={() => setMenuOpen((open) => !open)}
+              onClick={() => {
+                setMenuOpen((open) => !open)
+                setSearchOpen(false)
+              }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                 <path d="M3 6h18M3 12h18M3 18h18" />

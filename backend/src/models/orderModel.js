@@ -44,8 +44,8 @@ const findOrderById = async (id) => {
   return result.rows[0]
 }
 
-const updateStatus = async (id, status) => {
-  const result = await pool.query('UPDATE orders SET status = $1 WHERE id = $2 RETURNING *', [
+const updateStatus = async (id, status, client = pool) => {
+  const result = await client.query('UPDATE orders SET status = $1 WHERE id = $2 RETURNING *', [
     status,
     id,
   ])

@@ -49,6 +49,11 @@ const findByIdForOrder = async (id, client = pool) => {
   return result.rows[0]
 }
 
+const findById = async (id) => {
+  const result = await pool.query('SELECT * FROM products WHERE id = $1', [id])
+  return result.rows[0]
+}
+
 const decrementStock = async (id, quantity, client = pool) => {
   await client.query('UPDATE products SET stock = stock - $1 WHERE id = $2', [quantity, id])
 }
@@ -147,6 +152,7 @@ module.exports = {
   findListedProducts,
   findListedById,
   findByIdForOrder,
+  findById,
   decrementStock,
   findAllAdmin,
   findByIdAdmin,

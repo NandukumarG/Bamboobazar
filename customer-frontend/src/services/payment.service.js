@@ -1,6 +1,16 @@
-// Razorpay integration is not wired up yet (the backend's config/razorpay.js
-// is unused until a later part of this project). This placeholder keeps a
-// stable import for pages until that lands.
-export const initiatePayment = async () => {
-  throw new Error('Payment integration is not enabled yet.')
+import api from './api'
+
+export const createRazorpayOrder = async (orderId) => {
+  const { data } = await api.post('/payments/create-order', { orderId })
+  return data
+}
+
+export const verifyPayment = async (payload) => {
+  const { data } = await api.post('/payments/verify', payload)
+  return data
+}
+
+export const markPaymentFailed = async (payload) => {
+  const { data } = await api.post('/payments/failed', payload)
+  return data
 }

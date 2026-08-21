@@ -3,10 +3,11 @@ const cors = require('cors')
 
 const routes = require('./routes')
 const { notFound, errorHandler } = require('./middleware/errorHandler')
+const corsOptions = require('./config/cors')
 
 const app = express()
 
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json())
 
 app.get('/health', (req, res) => {
