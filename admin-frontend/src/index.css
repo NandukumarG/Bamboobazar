@@ -82,9 +82,17 @@ h2 {
 }
 
 .admin-sidebar__brand {
-  font-weight: 700;
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
+  background: var(--color-surface);
+  border-radius: 10px;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-sidebar__logo {
+  height: 48px;
+  width: auto;
+  display: block;
 }
 
 .admin-nav {

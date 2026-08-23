@@ -6,6 +6,9 @@ import CategoryTile from '../components/CategoryTile'
 import ProductCard from '../components/ProductCard'
 import Loader from '../components/Loader'
 import Reveal from '../components/Reveal'
+import heroBg from '../assets/hero-bg.png'
+import storyImage from '../assets/aboutus-1.png'
+import bannerImage from '../assets/aboutus-2.png'
 
 const FEATURES = [
   {
@@ -72,12 +75,12 @@ function HomePage() {
 
   const bestSellers = products.slice(0, 4)
 
-  // Categories have no image of their own — borrow the first listed product
-  // photo found for each one so the tiles aren't just flat color.
-  const categoryImages = {}
+  // Fall back to a representative product photo only when the category has
+  // no image of its own set in the admin panel.
+  const fallbackCategoryImages = {}
   products.forEach((product) => {
-    if (product.category_slug && !categoryImages[product.category_slug]) {
-      categoryImages[product.category_slug] = product.image_url
+    if (product.category_slug && !fallbackCategoryImages[product.category_slug]) {
+      fallbackCategoryImages[product.category_slug] = product.image_url
     }
   })
 
@@ -95,52 +98,18 @@ function HomePage() {
     <div>
       <section className="hero" onMouseMove={handleHeroMouseMove} onMouseLeave={handleHeroMouseLeave}>
         <div
-          className="hero__layer hero__layer--back"
-          aria-hidden="true"
-          style={{ transform: `translate3d(${heroTilt.x * -16}px, ${heroTilt.y * -16}px, 0)` }}
-        >
-          <svg viewBox="0 0 200 400" fill="none">
-            <g stroke="#F7F3E8" strokeOpacity="0.22" strokeWidth="3">
-              <line x1="30" y1="0" x2="30" y2="400" />
-              <line x1="30" y1="70" x2="46" y2="70" />
-              <line x1="30" y1="170" x2="46" y2="170" />
-              <line x1="30" y1="270" x2="46" y2="270" />
-              <line x1="90" y1="40" x2="90" y2="400" />
-              <line x1="90" y1="120" x2="106" y2="120" />
-              <line x1="90" y1="220" x2="106" y2="220" />
-              <line x1="90" y1="320" x2="106" y2="320" />
-              <line x1="150" y1="0" x2="150" y2="400" />
-              <line x1="150" y1="90" x2="166" y2="90" />
-              <line x1="150" y1="190" x2="166" y2="190" />
-              <line x1="150" y1="290" x2="166" y2="290" />
-            </g>
-          </svg>
-        </div>
-
-        <div
-          className="hero__layer hero__layer--front hero__layer--leaf1"
-          aria-hidden="true"
-          style={{ transform: `translate3d(${heroTilt.x * 24}px, ${heroTilt.y * 24}px, 0)` }}
-        >
-          <svg viewBox="0 0 120 120" fill="none">
-            <path d="M60 8C82 30 92 58 60 112C28 58 38 30 60 8Z" fill="#C9A227" fillOpacity="0.4" />
-          </svg>
-        </div>
-
-        <div
-          className="hero__layer hero__layer--front hero__layer--leaf2"
-          aria-hidden="true"
-          style={{ transform: `translate3d(${heroTilt.x * 32}px, ${heroTilt.y * 32}px, 0)` }}
-        >
-          <svg viewBox="0 0 120 120" fill="none">
-            <path d="M60 8C82 30 92 58 60 112C28 58 38 30 60 8Z" fill="#F7F3E8" fillOpacity="0.3" />
-          </svg>
-        </div>
-
-        <div
           className="hero__content"
           style={{ transform: `perspective(1200px) rotateX(${heroTilt.y * -3}deg) rotateY(${heroTilt.x * 3}deg)` }}
         >
+          <div
+            className="hero__leaf"
+            aria-hidden="true"
+            style={{ transform: `translate3d(${heroTilt.x * 12}px, ${heroTilt.y * 12}px, 0)` }}
+          >
+            <svg viewBox="0 0 120 120" fill="none">
+              <path d="M60 8C82 30 92 58 60 112C28 58 38 30 60 8Z" fill="#6B7A3D" fillOpacity="0.18" />
+            </svg>
+          </div>
           <h1>
             Crafted
             <br />
@@ -151,10 +120,19 @@ function HomePage() {
             <Link to="/products" className="btn btn-primary">
               Shop Collection
             </Link>
-            <a href="#story" className="btn btn-outline-light">
+            <a href="#story" className="btn btn-ghost">
               Explore Our Story
             </a>
           </div>
+        </div>
+
+        <div className="hero__media">
+          <div
+            className="hero__media-img"
+            role="img"
+            aria-label="Bamboo vase and console table styled with natural light"
+            style={{ backgroundImage: `url(${heroBg})` }}
+          />
         </div>
       </section>
 
@@ -167,7 +145,11 @@ function HomePage() {
           <div className="category-strip">
             {categories.map((category, index) => (
               <Reveal key={category.id} delay={index * 60}>
-                <CategoryTile category={category} imageUrl={categoryImages[category.slug]} index={index} />
+                <CategoryTile
+                  category={category}
+                  imageUrl={category.image_url || fallbackCategoryImages[category.slug]}
+                  index={index}
+                />
               </Reveal>
             ))}
             {categories.length === 0 && <p>No categories available yet.</p>}
@@ -196,7 +178,14 @@ function HomePage() {
       </section>
 
       <Reveal as="section" id="story" className="story">
-        <div className="story__panel" aria-hidden="true" />
+        <div className="story__panel">
+          <div
+            className="story__panel-img"
+            role="img"
+            aria-label="Sunlit bamboo stalks with fresh leaves"
+            style={{ backgroundImage: `url(${storyImage})` }}
+          />
+        </div>
         <div className="story__content">
           <h2>From Bamboo to Belonging</h2>
           <p>
@@ -234,7 +223,9 @@ function HomePage() {
                 Shop the Collection
               </Link>
             </div>
-            <div className="banner__panel" aria-hidden="true" />
+            <div className="banner__panel">
+              <img src={bannerImage} alt="Rattan pendant light over a bamboo console table" />
+            </div>
           </div>
         </Reveal>
       </section>
@@ -260,6 +251,36 @@ function HomePage() {
             </Reveal>
           ))}
         </div>
+      </section>
+
+      <section className="section">
+        <Reveal>
+          <div className="contact-card">
+            <div className="contact-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                <path d="M21 5.5v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-13m18 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1m18 0-9 7-9-7" />
+              </svg>
+            </div>
+            <div className="contact-card__content">
+              <h2>Contact Us</h2>
+              <p>Have a question about an order or our products? We&apos;d love to hear from you.</p>
+              <div className="contact-card__details">
+                <a href="tel:+919876543210" className="contact-card__item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
+                    <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2Z" />
+                  </svg>
+                  <span>+91 98765 43210</span>
+                </a>
+add                <a href="mailto:hello@bamboostore.example" className="contact-card__item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
+                    <path d="M21 5.5v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-13m18 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1m18 0-9 7-9-7" />
+                  </svg>
+                  <span>hello@bamboostore.example</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </section>
     </div>
   )

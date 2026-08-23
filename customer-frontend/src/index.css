@@ -102,16 +102,15 @@ h2 {
 }
 
 .navbar__brand {
-  font-weight: 700;
-  font-size: 1.15rem;
-  color: var(--color-primary-deep);
-  text-decoration: none;
+  display: flex;
+  align-items: center;
   margin-right: auto;
-  letter-spacing: 0.01em;
 }
 
-.navbar__brand span {
-  color: var(--color-gold);
+.navbar__logo {
+  height: 44px;
+  width: auto;
+  display: block;
 }
 
 .navbar__links {
@@ -437,71 +436,73 @@ h2 {
 .hero {
   position: relative;
   overflow: hidden;
-  background:
-    linear-gradient(100deg, rgba(41, 43, 34, 0.85) 0%, rgba(41, 43, 34, 0.5) 38%, rgba(41, 43, 34, 0.05) 65%),
-    linear-gradient(135deg, var(--color-warm), var(--color-gold) 45%, var(--color-primary) 100%);
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(340px, 1.2fr);
+  align-items: stretch;
+  min-height: 560px;
+  background: linear-gradient(160deg, var(--color-ivory), var(--color-surface));
   border-bottom: 1px solid var(--color-warm);
-}
-
-.hero__layer {
-  position: absolute;
-  pointer-events: none;
-  transition: transform 0.2s ease-out;
-  will-change: transform;
-}
-
-.hero__layer--back {
-  top: -60px;
-  right: 4%;
-  width: 220px;
-  opacity: 0.8;
-}
-
-.hero__layer--front {
-  width: 90px;
-}
-
-.hero__layer--leaf1 {
-  top: 12%;
-  right: 22%;
-}
-
-.hero__layer--leaf2 {
-  top: 55%;
-  right: 8%;
-  width: 60px;
 }
 
 .hero__content {
   position: relative;
   z-index: 1;
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Left inset matches the 1120px-max centered container every other
+     section uses, so the headline lines up with content below it. */
+  padding: 4rem 3rem 4rem max(1.5rem, calc((100vw - 1120px) / 2 + 1.5rem));
   transition: transform 0.2s ease-out;
   transform-style: preserve-3d;
 }
 
+.hero__leaf {
+  position: absolute;
+  bottom: -10%;
+  left: -6%;
+  width: 220px;
+  pointer-events: none;
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+
 .hero__content h1 {
-  font-size: 3rem;
+  position: relative;
+  font-size: 3.2rem;
   line-height: 1.05;
   margin-bottom: 1rem;
-  color: var(--color-ivory);
+  color: var(--color-primary-deep);
   font-weight: 700;
   max-width: 560px;
 }
 
 .hero__content p {
-  color: var(--color-ivory);
-  opacity: 0.85;
+  position: relative;
+  color: var(--color-muted);
   margin-bottom: 1.75rem;
-  max-width: 460px;
+  max-width: 420px;
 }
 
 .hero__actions {
+  position: relative;
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+.hero__media {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__media-img {
+  position: absolute;
+  inset: -12% 0;
+  height: 124%;
+  background-size: cover;
+  background-position: center 35%;
+  background-attachment: fixed;
 }
 
 /* ---------- Sections & grids ---------- */
@@ -1175,8 +1176,18 @@ tbody tr:last-child td {
 }
 
 .story__panel {
-  background: linear-gradient(150deg, var(--color-warm), var(--color-primary) 70%, var(--color-primary-deep));
+  position: relative;
   min-height: 320px;
+  overflow: hidden;
+}
+
+.story__panel-img {
+  position: absolute;
+  inset: -12% 0;
+  height: 124%;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .story__content {
@@ -1272,7 +1283,14 @@ tbody tr:last-child td {
 }
 
 .banner__panel {
-  background: linear-gradient(150deg, var(--color-gold), var(--color-warm) 60%, var(--color-primary-deep));
+  overflow: hidden;
+}
+
+.banner__panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ---------- Testimonials (home) ---------- */
@@ -1337,6 +1355,85 @@ tbody tr:last-child td {
   font-size: 0.78rem;
 }
 
+/* ---------- Contact card (home) ---------- */
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-warm);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+}
+
+.contact-card__icon {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: var(--color-primary-deep);
+  color: var(--color-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-card__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.contact-card__content h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.3rem;
+  color: var(--color-primary-deep);
+}
+
+.contact-card__content > p {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.contact-card__details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.contact-card__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.contact-card__item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-gold);
+  flex-shrink: 0;
+}
+
+.contact-card__item:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 560px) {
+  .contact-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.75rem;
+  }
+
+  .contact-card__details {
+    justify-content: center;
+  }
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 860px) {
@@ -1350,6 +1447,24 @@ tbody tr:last-child td {
 
   .checkout__summary {
     position: static;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .hero__content {
+    padding: 3rem 1.5rem 2.5rem;
+  }
+
+  .hero__media {
+    min-height: 280px;
+  }
+
+  .hero__media-img,
+  .story__panel-img {
+    background-attachment: scroll;
   }
 
   .story,

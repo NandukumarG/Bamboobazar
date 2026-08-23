@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import logo from '../assets/logo.png'
 
 function Navbar() {
   const { isAuthenticated, user } = useAuth()
@@ -27,7 +28,7 @@ function Navbar() {
       <header className="navbar">
         <div className="navbar__inner">
           <Link to="/" className="navbar__brand">
-            Bamboo<span>Store</span>
+            <img src={logo} alt="Bamboo Bazar" className="navbar__logo" />
           </Link>
 
           <nav className={`navbar__links${menuOpen ? ' is-open' : ''}`}>

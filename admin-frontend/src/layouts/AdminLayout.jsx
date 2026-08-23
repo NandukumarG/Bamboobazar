@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import logo from '../assets/logo.png'
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard' },
@@ -14,7 +15,9 @@ function AdminLayout() {
   return (
     <div className="admin-shell">
       <aside className="admin-sidebar">
-        <div className="admin-sidebar__brand">Bamboo Admin</div>
+        <div className="admin-sidebar__brand">
+          <img src={logo} alt="Bamboo Bazar" className="admin-sidebar__logo" />
+        </div>
         <nav className="admin-nav">
           {navItems.map((item) => (
             <NavLink

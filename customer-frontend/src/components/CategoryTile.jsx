@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTilt } from '../hooks/useTilt'
 
-// Categories have no image of their own in the schema, so the tile borrows a
-// representative product photo when one is available; otherwise it falls
-// back to a palette gradient rather than a fake stock photo.
+// Falls back to a palette gradient when no image (category or product) is available.
 const GRADIENTS = [
   'linear-gradient(160deg, #6B7A3D, #3F4A24)',
   'linear-gradient(160deg, #D8B56A, #C9A227)',
