@@ -26,22 +26,22 @@ const findByIdAdmin = async (id) => {
   return result.rows[0]
 }
 
-const createCategory = async ({ name, slug, description, isActive }) => {
+const createCategory = async ({ name, slug, description, imageUrl, isActive }) => {
   const result = await pool.query(
-    `INSERT INTO categories (name, slug, description, is_active)
-     VALUES ($1, $2, $3, $4)
+    `INSERT INTO categories (name, slug, description, image_url, is_active)
+     VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
-    [name, slug, description, isActive]
+    [name, slug, description, imageUrl, isActive]
   )
   return result.rows[0]
 }
 
-const updateCategory = async (id, { name, slug, description }) => {
+const updateCategory = async (id, { name, slug, description, imageUrl }) => {
   const result = await pool.query(
-    `UPDATE categories SET name = $1, slug = $2, description = $3
-     WHERE id = $4
+    `UPDATE categories SET name = $1, slug = $2, description = $3, image_url = $4
+     WHERE id = $5
      RETURNING *`,
-    [name, slug, description, id]
+    [name, slug, description, imageUrl, id]
   )
   return result.rows[0]
 }

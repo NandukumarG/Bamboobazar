@@ -1,3 +1,4 @@
+const multer = require('multer')
 const ApiError = require('../utils/ApiError')
 
 const notFound = (req, res, next) => {
@@ -5,6 +6,10 @@ const notFound = (req, res, next) => {
 }
 
 const errorHandler = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({ message: err.message })
+  }
+
   // Postgres unique / foreign-key violations map to clean 4xx responses
   // instead of falling through to a generic 500 with a raw SQL message.
   if (err.code === '23505') {

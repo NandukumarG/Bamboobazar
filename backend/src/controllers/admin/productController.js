@@ -9,6 +9,7 @@ const {
 const slugify = require('../../utils/slugify')
 const { computeSellingPrice } = require('../../utils/price')
 const productModel = require('../../models/productModel')
+const cloudinary = require('../../config/cloudinary')
 
 const parseProductInput = (body) => {
   const errors = []
@@ -109,6 +110,20 @@ const deleteProduct = asyncHandler(async (req, res) => {
   res.status(204).send()
 })
 
+const uploadProductImage = asyncHandler(async (req, res) => {
+  if (!req.file) throw new ApiError(400, 'No image file provided')
+
+  const result = await new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: 'bamboo-store/products', resource_type: 'image' },
+      (err, uploaded) => (err ? reject(err) : resolve(uploaded))
+    )
+    stream.end(req.file.buffer)
+  })
+
+  res.status(201).json({ url: result.secure_url })
+})
+
 module.exports = {
   listProducts,
   getProduct,
@@ -116,4 +131,5 @@ module.exports = {
   updateProduct,
   updateProductStatus,
   deleteProduct,
+  uploadProductImage,
 }

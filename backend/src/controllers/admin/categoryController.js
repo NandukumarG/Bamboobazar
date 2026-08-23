@@ -3,6 +3,7 @@ const ApiError = require('../../utils/ApiError')
 const { isNonEmptyString, isBoolean } = require('../../utils/validators')
 const slugify = require('../../utils/slugify')
 const categoryModel = require('../../models/categoryModel')
+const cloudinary = require('../../config/cloudinary')
 
 const parseCategoryInput = (body) => {
   const errors = []
@@ -15,6 +16,7 @@ const parseCategoryInput = (body) => {
     name: body.name.trim(),
     slug,
     description: body.description || null,
+    imageUrl: body.imageUrl || null,
   }
 }
 
@@ -72,10 +74,25 @@ const updateCategoryStatus = asyncHandler(async (req, res) => {
   res.json({ category })
 })
 
+const uploadCategoryImage = asyncHandler(async (req, res) => {
+  if (!req.file) throw new ApiError(400, 'No image file provided')
+
+  const result = await new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: 'bamboo-store/categories', resource_type: 'image' },
+      (err, uploaded) => (err ? reject(err) : resolve(uploaded))
+    )
+    stream.end(req.file.buffer)
+  })
+
+  res.status(201).json({ url: result.secure_url })
+})
+
 module.exports = {
   listCategories,
   getCategory,
   createCategory,
   updateCategory,
   updateCategoryStatus,
+  uploadCategoryImage,
 }

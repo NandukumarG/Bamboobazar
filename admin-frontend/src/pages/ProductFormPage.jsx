@@ -26,6 +26,8 @@ function ProductFormPage() {
   const [errors, setErrors] = useState([])
   const [loading, setLoading] = useState(isEdit)
   const [submitting, setSubmitting] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
 
   useEffect(() => {
     categoryService.getCategories().then(setCategories).catch(() => {})
@@ -54,6 +56,23 @@ function ProductFormPage() {
 
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }))
+  }
+
+  const handleImageFileChange = async (event) => {
+    const file = event.target.files[0]
+    event.target.value = ''
+    if (!file) return
+
+    setUploadError('')
+    setUploading(true)
+    try {
+      const url = await productService.uploadProductImage(file)
+      setForm((prev) => ({ ...prev, imageUrl: url }))
+    } catch (err) {
+      setUploadError(err.response?.data?.message || 'Failed to upload image')
+    } finally {
+      setUploading(false)
+    }
   }
 
   const handleSubmit = async (event) => {
@@ -187,6 +206,20 @@ function ProductFormPage() {
               onChange={handleChange('imageUrl')}
               placeholder="https://res.cloudinary.com/…"
             />
+          </label>
+
+          <label className="field">
+            <span>Upload image</span>
+            <input type="file" accept="image/*" onChange={handleImageFileChange} disabled={uploading} />
+            {uploading && <small>Uploading…</small>}
+            {uploadError && <small className="alert-error">{uploadError}</small>}
+            {form.imageUrl && !uploading && (
+              <img
+                src={form.imageUrl}
+                alt="Product preview"
+                style={{ maxWidth: '160px', marginTop: '8px', borderRadius: '4px' }}
+              />
+            )}
           </label>
         </div>
 
