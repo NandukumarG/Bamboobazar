@@ -19,6 +19,7 @@ CREATE TABLE users (
   email          VARCHAR(255) NOT NULL UNIQUE,
   phone          VARCHAR(20),
   password_hash  VARCHAR(255) NOT NULL,
+  avatar_url     TEXT,
   role           VARCHAR(20) NOT NULL DEFAULT 'CUSTOMER'
                  CHECK (role IN ('CUSTOMER', 'ADMIN')),
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),

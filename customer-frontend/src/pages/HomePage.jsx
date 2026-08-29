@@ -55,10 +55,7 @@ const TESTIMONIALS = [
 function HomePage() {
   const [categories, setCategories] = useState([])
   const [products, setProducts] = useState([])
-  // Category strip and Best Sellers are the only sections backed by the API —
-  // everything else below (story, features, banner, testimonials) is static
-  // marketing content and must render regardless of whether the API call
-  // succeeds, so a backend hiccup doesn't blank out most of the page.
+  
   const [dataLoading, setDataLoading] = useState(true)
   const [dataError, setDataError] = useState('')
   const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 })

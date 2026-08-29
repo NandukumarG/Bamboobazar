@@ -2,6 +2,8 @@ const asyncHandler = require('../utils/asyncHandler')
 const ApiError = require('../utils/ApiError')
 const { isNonEmptyString, isValidEmail } = require('../utils/validators')
 const authService = require('../services/authService')
+const userModel = require('../models/userModel')
+const cloudinary = require('../config/cloudinary')
 
 const register = asyncHandler(async (req, res) => {
   const { name, email, phone, password } = req.body
@@ -32,4 +34,19 @@ const login = asyncHandler(async (req, res) => {
   res.json({ user, token })
 })
 
-module.exports = { register, login }
+const uploadAvatar = asyncHandler(async (req, res) => {
+  if (!req.file) throw new ApiError(400, 'No image file provided')
+
+  const result = await new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: 'bamboo-store/avatars', resource_type: 'image' },
+      (err, uploaded) => (err ? reject(err) : resolve(uploaded))
+    )
+    stream.end(req.file.buffer)
+  })
+
+  const user = await userModel.updateAvatar(req.user.id, result.secure_url)
+  res.json({ user })
+})
+
+module.exports = { register, login, uploadAvatar }
