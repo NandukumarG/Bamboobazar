@@ -96,6 +96,12 @@ CREATE TABLE orders (
   city           VARCHAR(100) NOT NULL,
   state          VARCHAR(100) NOT NULL,
   pincode        VARCHAR(15) NOT NULL,
+  shiprocket_order_id     BIGINT,
+  shiprocket_shipment_id  BIGINT,
+  awb_code                VARCHAR(50),
+  courier_name            VARCHAR(100),
+  tracking_url            TEXT,
+  invoice_url             TEXT,
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at     TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

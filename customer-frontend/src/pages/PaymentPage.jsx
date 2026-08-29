@@ -3,9 +3,11 @@ import { Link, useLocation } from 'react-router-dom'
 import * as paymentService from '../services/payment.service'
 import { loadRazorpayScript } from '../utils/loadRazorpayScript'
 import { formatCurrency } from '../utils/currency'
+import { useCart } from '../context/CartContext'
 
 function PaymentPage() {
   const location = useLocation()
+  const { clearCart } = useCart()
   const [order] = useState(location.state?.order || null)
   const [status, setStatus] = useState(order?.status === 'PAID' ? 'success' : 'idle')
   const [error, setError] = useState('')
@@ -58,6 +60,7 @@ function PaymentPage() {
             })
             setPaidOrder(result.order)
             setStatus('success')
+            clearCart()
           } catch (err) {
             setError(err.response?.data?.message || 'Payment verification failed.')
             setStatus('failed')

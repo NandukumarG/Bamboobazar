@@ -1,11 +1,12 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { CART_KEY } from '../utils/cartStorage'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { useAuth } from './AuthContext'
+import { getCartStorageKey } from '../utils/cartStorage'
 
 const CartContext = createContext(null)
 
-const readCart = () => {
+const readCart = (storageKey) => {
   try {
-    const stored = localStorage.getItem(CART_KEY)
+    const stored = localStorage.getItem(storageKey)
     return stored ? JSON.parse(stored) : []
   } catch {
     return []
@@ -13,11 +14,24 @@ const readCart = () => {
 }
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState(readCart)
+  const { user } = useAuth()
+  const storageKey = getCartStorageKey(user?.id)
 
+  const [items, setItems] = useState(() => readCart(storageKey))
+  const storageKeyRef = useRef(storageKey)
+
+  // Each identity (guest, or a given logged-in user) has its own cart slot.
+  // When the identity changes (login/logout), load that identity's cart
+  // instead of persisting the outgoing identity's items into the new slot.
   useEffect(() => {
-    localStorage.setItem(CART_KEY, JSON.stringify(items))
-  }, [items])
+    if (storageKeyRef.current !== storageKey) {
+      storageKeyRef.current = storageKey
+      setItems(readCart(storageKey))
+      return
+    }
+
+    localStorage.setItem(storageKey, JSON.stringify(items))
+  }, [items, storageKey])
 
   // Cart entries snapshot price/stock at add-time purely for display — the
   // backend re-reads price and stock from PostgreSQL when the order is placed.

@@ -2,10 +2,9 @@ const pool = require('../config/db')
 const productModel = require('../models/productModel')
 const orderModel = require('../models/orderModel')
 const orderItemModel = require('../models/orderItemModel')
+const shippingService = require('./shippingService')
 const ApiError = require('../utils/ApiError')
 const generateOrderNumber = require('../utils/orderNumber')
-
-const SHIPPING_FLAT_RATE = 0
 
 const createOrder = async ({
   userId,
@@ -19,6 +18,11 @@ const createOrder = async ({
   state,
   pincode,
 }) => {
+  const shipping = await shippingService.calculateShippingFee({
+    destinationPincode: pincode,
+    paymentMethod,
+  })
+
   const client = await pool.connect()
 
   try {
@@ -50,7 +54,6 @@ const createOrder = async ({
       await productModel.decrementStock(product.id, item.quantity, client)
     }
 
-    const shipping = SHIPPING_FLAT_RATE
     const total = subtotal + shipping
 
     const order = await orderModel.createOrder(
