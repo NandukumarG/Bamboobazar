@@ -370,6 +370,12 @@ tbody tr:last-child td {
   border: 1px solid rgba(161, 61, 61, 0.3);
 }
 
+.field-error {
+  color: #a13d3d;
+  font-size: 0.82rem;
+  margin: 0.4rem 0 0;
+}
+
 /* ---------- Dashboard ---------- */
 
 .stat-grid {

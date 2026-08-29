@@ -14,3 +14,8 @@ export const updateOrderStatus = async (id, status) => {
   const { data } = await api.patch(`/admin/orders/${id}/status`, { status })
   return data.order
 }
+
+export const createShipment = async (id) => {
+  const { data } = await api.post(`/admin/orders/${id}/shipment`)
+  return data.order
+}
