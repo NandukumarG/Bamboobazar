@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { formatCurrency } from '../utils/currency'
-import checkoutBg from '../assets/checkout.png'
+import checkoutBg from '../assets/checkout.webp'
 
 // Display-only estimate; the backend computes the authoritative shipping and
 // total from PostgreSQL when the order is actually placed.

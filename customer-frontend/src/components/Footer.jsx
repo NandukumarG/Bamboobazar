@@ -51,6 +51,7 @@ function Footer() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              aria-label="Email address for newsletter"
               placeholder="Enter your email address"
               required
             />

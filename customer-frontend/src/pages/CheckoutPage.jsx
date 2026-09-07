@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import * as orderService from '../services/order.service'
 import { getShippingQuote } from '../services/shipping.service'
 import { formatCurrency } from '../utils/currency'
-import checkoutBg from '../assets/checkout.png'
+import checkoutBg from '../assets/checkout.webp'
 
 const PINCODE_REGEX = /^\d{6}$/
 

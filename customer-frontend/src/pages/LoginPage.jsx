@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import * as authService from '../services/auth.service'
-import loginImage from '../assets/login.png'
+import loginImage from '../assets/login.webp'
 import logo from '../assets/logo.png'
 
 function LoginPage() {

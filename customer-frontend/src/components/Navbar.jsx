@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import logo from '../assets/logo.png'
@@ -8,9 +8,16 @@ function Navbar() {
   const { isAuthenticated, user } = useAuth()
   const { items } = useCart()
   const navigate = useNavigate()
+  const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState('')
+  useEffect(() => { setMenuOpen(false); setSearchOpen(false) }, [location.pathname, location.search])
+  useEffect(() => {
+    const close = event => { if (event.key === 'Escape') { setMenuOpen(false); setSearchOpen(false) } }
+    document.addEventListener('keydown', close)
+    return () => document.removeEventListener('keydown', close)
+  }, [])
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
   const handleSearchSubmit = (e) => {
@@ -31,7 +38,7 @@ function Navbar() {
             <img src={logo} alt="Bamboo Bazar" className="navbar__logo" />
           </Link>
 
-          <nav className={`navbar__links${menuOpen ? ' is-open' : ''}`}>
+          <nav id="primary-navigation" aria-label="Main navigation" className={`navbar__links${menuOpen ? ' is-open' : ''}`}>
             <NavLink to="/" end onClick={() => setMenuOpen(false)}>
               Home
             </NavLink>
@@ -48,6 +55,7 @@ function Navbar() {
 
           <form
             className={`navbar__search${searchOpen ? ' is-open' : ''}`}
+            id="navigation-search"
             role="search"
             onSubmit={handleSearchSubmit}
           >
@@ -71,6 +79,8 @@ function Navbar() {
               type="button"
               className="navbar__search-toggle"
               aria-label="Toggle search"
+              aria-expanded={searchOpen}
+              aria-controls="navigation-search"
               onClick={() => {
                 setSearchOpen((open) => !open)
                 setMenuOpen(false)
@@ -110,6 +120,8 @@ function Navbar() {
               type="button"
               className="navbar__menu-toggle"
               aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+              aria-controls="primary-navigation"
               onClick={() => {
                 setMenuOpen((open) => !open)
                 setSearchOpen(false)

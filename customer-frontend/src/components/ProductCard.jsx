@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { formatCurrency } from '../utils/currency'
@@ -6,15 +7,23 @@ import { useTilt } from '../hooks/useTilt'
 // showAddToCart opts a grid into a real "add to cart" action (used on the
 // homepage's Best Sellers section); other listings keep the plain click-through card.
 function ProductCard({ product, showAddToCart = false }) {
-  const { addItem } = useCart()
+  const { addItem, items } = useCart()
+  const [added, setAdded] = useState(false)
+  const timer = useRef(0)
+  useEffect(() => () => clearTimeout(timer.current), [])
+  const cartQuantity = items.find(item => item.productId === product.id)?.quantity || 0
+  const atLimit = cartQuantity >= product.stock
   const tilt = useTilt()
   const hasDiscount = Number(product.discount) > 0
   const inStock = product.stock > 0
 
   const handleAddToCart = (event) => {
     event.preventDefault()
-    if (!inStock) return
+    if (!inStock || atLimit) return
     addItem(product, 1)
+    setAdded(true)
+    clearTimeout(timer.current)
+    timer.current = setTimeout(() => setAdded(false), 1800)
   }
 
   return (
@@ -57,10 +66,11 @@ function ProductCard({ product, showAddToCart = false }) {
         <button
           type="button"
           className="btn btn-dark product-card__add"
-          disabled={!inStock}
+          aria-live="polite"
+          disabled={!inStock || atLimit}
           onClick={handleAddToCart}
         >
-          {inStock ? 'Add to cart' : 'Out of stock'}
+          {!inStock ? 'Out of stock' : added ? 'Added to cart' : atLimit ? 'Maximum in cart' : 'Add to cart +'}
         </button>
       )}
     </div>

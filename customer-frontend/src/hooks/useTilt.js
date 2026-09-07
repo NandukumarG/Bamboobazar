@@ -1,31 +1,26 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
-const MAX_TILT_DEG = 9
-
-// Pointer-tracked 3D tilt: rotates the element toward the cursor and lifts
-// it slightly, then eases back flat on mouse leave. CSS handles the
-// prefers-reduced-motion override (see .tilt in index.css), so this hook
-// doesn't need to branch on that itself.
+// Update at most once per animation frame, without rendering React on pointer movement.
 export function useTilt() {
   const ref = useRef(null)
-  const [style, setStyle] = useState(undefined)
-
+  const frame = useRef(0)
+  useEffect(() => () => cancelAnimationFrame(frame.current), [])
   const onMouseMove = (event) => {
-    const el = ref.current
-    if (!el) return
-
-    const rect = el.getBoundingClientRect()
-    const x = (event.clientX - rect.left) / rect.width
-    const y = (event.clientY - rect.top) / rect.height
-    const rotateY = (x - 0.5) * MAX_TILT_DEG * 2
-    const rotateX = (0.5 - y) * MAX_TILT_DEG * 2
-
-    setStyle({
-      transform: `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px) scale3d(1.02, 1.02, 1.02)`,
+    if (!window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) return
+    const { clientX, clientY } = event
+    cancelAnimationFrame(frame.current)
+    frame.current = requestAnimationFrame(() => {
+      const el = ref.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      const x = (clientX - rect.left) / rect.width - 0.5
+      const y = (clientY - rect.top) / rect.height - 0.5
+      el.style.transform = `perspective(1000px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) translateY(-3px)`
     })
   }
-
-  const onMouseLeave = () => setStyle(undefined)
-
-  return { ref, style, onMouseMove, onMouseLeave }
+  const onMouseLeave = () => {
+    cancelAnimationFrame(frame.current)
+    if (ref.current) ref.current.style.transform = ''
+  }
+  return { ref, onMouseMove, onMouseLeave }
 }

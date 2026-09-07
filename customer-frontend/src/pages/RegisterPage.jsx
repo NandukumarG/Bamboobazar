@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import * as authService from '../services/auth.service'
-import signUpImage from '../assets/sign-up.png'
+import signUpImage from '../assets/sign-up.webp'
 import logo from '../assets/logo.png'
 
 const emptyForm = { name: '', email: '', phone: '', password: '' }

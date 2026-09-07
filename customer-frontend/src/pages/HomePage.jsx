@@ -6,9 +6,10 @@ import CategoryTile from '../components/CategoryTile'
 import ProductCard from '../components/ProductCard'
 import Loader from '../components/Loader'
 import Reveal from '../components/Reveal'
-import heroBg from '../assets/hero-bg.png'
-import storyImage from '../assets/aboutus-1.png'
-import bannerImage from '../assets/aboutus-2.png'
+import BambooScene from '../components/BambooScene'
+import heroBg from '../assets/hero-bg.webp'
+import storyImage from '../assets/aboutus-1.webp'
+import bannerImage from '../assets/aboutus-2.webp'
 
 const FEATURES = [
   {
@@ -58,7 +59,7 @@ function HomePage() {
   
   const [dataLoading, setDataLoading] = useState(true)
   const [dataError, setDataError] = useState('')
-  const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 })
+
 
   useEffect(() => {
     Promise.all([categoryService.getCategories(), productService.getProducts({ limit: 20 })])
@@ -81,59 +82,29 @@ function HomePage() {
     }
   })
 
-  const handleHeroMouseMove = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    setHeroTilt({
-      x: (event.clientX - rect.left) / rect.width - 0.5,
-      y: (event.clientY - rect.top) / rect.height - 0.5,
-    })
-  }
-
-  const handleHeroMouseLeave = () => setHeroTilt({ x: 0, y: 0 })
-
   return (
     <div>
-      <section className="hero" onMouseMove={handleHeroMouseMove} onMouseLeave={handleHeroMouseLeave}>
-        <div
-          className="hero__content"
-          style={{ transform: `perspective(1200px) rotateX(${heroTilt.y * -3}deg) rotateY(${heroTilt.x * 3}deg)` }}
-        >
-          <div
-            className="hero__leaf"
-            aria-hidden="true"
-            style={{ transform: `translate3d(${heroTilt.x * 12}px, ${heroTilt.y * 12}px, 0)` }}
-          >
-            <svg viewBox="0 0 120 120" fill="none">
-              <path d="M60 8C82 30 92 58 60 112C28 58 38 30 60 8Z" fill="#6B7A3D" fillOpacity="0.18" />
-            </svg>
-          </div>
-          <h1>
-            Crafted
-            <br />
-            by Nature.
-          </h1>
-          <p>Thoughtfully designed bamboo products for beautiful, conscious living.</p>
+      <section className="hero">
+        <div className="hero__content">
+          <span className="eyebrow"><span className="status-dot" /> Rooted in nature. Made for living.</span>
+          <h1>Make room<br />for <em>natural</em><br /> beauty.</h1>
+          <p>Thoughtfully crafted bamboo pieces that bring warmth, character, and a little more nature to your everyday.</p>
           <div className="hero__actions">
-            <Link to="/products" className="btn btn-primary">
-              Shop Collection
-            </Link>
-            <a href="#story" className="btn btn-ghost">
-              Explore Our Story
-            </a>
+            <Link to="/products" className="btn btn-primary">Explore the collection <span aria-hidden="true">&#8599;</span></Link>
+            <a href="#story" className="hero-story-link">Our story <span aria-hidden="true">&#8599;</span></a>
           </div>
+          <div className="hero-note"><span aria-hidden="true">&#10035;</span><span>Natural materials.<br /><strong>Extraordinary everyday living.</strong></span></div>
         </div>
-
         <div className="hero__media">
-          <div
-            className="hero__media-img"
-            role="img"
-            aria-label="Bamboo vase and console table styled with natural light"
-            style={{ backgroundImage: `url(${heroBg})` }}
-          />
+          <img className="hero__photograph" src={heroBg} alt="Bamboo furniture and a vase in a warmly lit natural interior" fetchPriority="high" />
+          <div className="hero__image-label"><span>A slower way to live.</span><small>THE BAMBOO COLLECTION</small></div>
+          <a href="#material-studio" className="hero__floating-note"><span aria-hidden="true">&#8599;</span><div>Nature takes shape<small>Explore our interactive studio</small></div></a>
         </div>
       </section>
+      <div className="values-ribbon"><span>Thoughtfully designed</span><i aria-hidden="true">&#10035;</i><span>Inspired by nature</span><i aria-hidden="true">&#10035;</i><span>Made for your everyday</span><i aria-hidden="true">&#10035;</i><span>Crafted with care</span></div>
 
       <section className="section">
+        <div className="section-heading section-heading--row"><div><span className="eyebrow">Find your natural fit</span><h2>Considered collections.</h2></div><Link to="/categories" className="text-link">Explore all <span aria-hidden="true">&#8599;</span></Link></div>
         {dataLoading ? (
           <Loader label="Loading categories…" />
         ) : dataError ? (
@@ -156,7 +127,7 @@ function HomePage() {
 
       <section className="section">
         <Reveal className="section-heading" as="div">
-          <h2>Best Sellers</h2>
+          <span className="eyebrow">The everyday edit</span><h2>Small details. Big difference.</h2><p>Discover something beautiful for your space.</p>
         </Reveal>
         {dataLoading ? (
           <Loader label="Loading products…" />
@@ -173,6 +144,8 @@ function HomePage() {
           </div>
         )}
       </section>
+
+      <div className="section" id="material-studio"><BambooScene /></div>
 
       <Reveal as="section" id="story" className="story">
         <div className="story__panel">
@@ -221,7 +194,7 @@ function HomePage() {
               </Link>
             </div>
             <div className="banner__panel">
-              <img src={bannerImage} alt="Rattan pendant light over a bamboo console table" />
+              <img loading="lazy" decoding="async" src={bannerImage} alt="Rattan pendant light over a bamboo console table" />
             </div>
           </div>
         </Reveal>
@@ -268,7 +241,7 @@ function HomePage() {
                   </svg>
                   <span>+91 98765 43210</span>
                 </a>
-add                <a href="mailto:hello@bamboostore.example" className="contact-card__item">
+                <a href="mailto:hello@bamboostore.example" className="contact-card__item">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
                     <path d="M21 5.5v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-13m18 0a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1m18 0-9 7-9-7" />
                   </svg>
