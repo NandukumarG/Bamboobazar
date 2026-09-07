@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import { useShopExperience } from '../context/ShopExperience'
 import logo from '../assets/logo.png'
 
 function Navbar() {
   const { isAuthenticated, user } = useAuth()
   const { items } = useCart()
+  const { openBag } = useShopExperience()
   const navigate = useNavigate()
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -108,13 +110,13 @@ function Navbar() {
               </Link>
             )}
 
-            <Link to="/cart" className="navbar__icon-link" title="Cart">
+            <button type="button" className="navbar__icon-link navbar__bag" title="Cart" aria-label={`Open shopping bag, ${itemCount} items`} onClick={openBag}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                 <path d="M4 7h16l-1.5 10.5a2 2 0 0 1-2 1.5H7.5a2 2 0 0 1-2-1.5L4 7Z" />
                 <path d="M8 7V6a4 4 0 0 1 8 0v1" />
               </svg>
               {itemCount > 0 && <span className="navbar__cart-badge">{itemCount}</span>}
-            </Link>
+            </button>
 
             <button
               type="button"

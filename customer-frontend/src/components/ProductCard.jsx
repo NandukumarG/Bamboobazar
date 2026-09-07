@@ -1,80 +1,25 @@
-import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useShopExperience } from '../context/ShopExperience'
 import { formatCurrency } from '../utils/currency'
 import { useTilt } from '../hooks/useTilt'
+import ProductImage from './ProductImage'
 
-// showAddToCart opts a grid into a real "add to cart" action (used on the
-// homepage's Best Sellers section); other listings keep the plain click-through card.
-function ProductCard({ product, showAddToCart = false }) {
-  const { addItem, items } = useCart()
-  const [added, setAdded] = useState(false)
-  const timer = useRef(0)
-  useEffect(() => () => clearTimeout(timer.current), [])
-  const cartQuantity = items.find(item => item.productId === product.id)?.quantity || 0
-  const atLimit = cartQuantity >= product.stock
+export default function ProductCard({ product, showAddToCart = false }) {
+  const { items } = useCart()
+  const { quickView, addToBag } = useShopExperience()
   const tilt = useTilt()
-  const hasDiscount = Number(product.discount) > 0
-  const inStock = product.stock > 0
-
-  const handleAddToCart = (event) => {
-    event.preventDefault()
-    if (!inStock || atLimit) return
-    addItem(product, 1)
-    setAdded(true)
-    clearTimeout(timer.current)
-    timer.current = setTimeout(() => setAdded(false), 1800)
-  }
-
-  return (
-    <div
-      className="product-card tilt"
-      ref={tilt.ref}
-      style={tilt.style}
-      onMouseMove={tilt.onMouseMove}
-      onMouseLeave={tilt.onMouseLeave}
-    >
-      <Link to={`/products/${product.id}`} className="product-card__link">
-        <div className="product-card__image">
-          {product.image_url && (
-            <img
-              src={product.image_url}
-              alt={product.name}
-              loading="lazy"
-              onError={(event) => {
-                event.currentTarget.style.display = 'none'
-              }}
-            />
-          )}
-          <div className="product-card__placeholder">{product.name}</div>
-          {hasDiscount && <span className="product-card__badge">{Number(product.discount)}% off</span>}
-        </div>
-        <div className="product-card__body">
-          <h3>{product.name}</h3>
-          <p className="product-card__id">ID: {product.product_code}</p>
-          <div className="product-card__price">
-            <span className="product-card__selling">{formatCurrency(product.selling_price)}</span>
-            {hasDiscount && (
-              <span className="product-card__original">{formatCurrency(product.original_price)}</span>
-            )}
-          </div>
-          {!inStock && <span className="badge badge-muted">Out of stock</span>}
-        </div>
-      </Link>
-
-      {showAddToCart && (
-        <button
-          type="button"
-          className="btn btn-dark product-card__add"
-          aria-live="polite"
-          disabled={!inStock || atLimit}
-          onClick={handleAddToCart}
-        >
-          {!inStock ? 'Out of stock' : added ? 'Added to cart' : atLimit ? 'Maximum in cart' : 'Add to cart +'}
-        </button>
-      )}
+  const atLimit = (items.find(item => item.productId === product.id)?.quantity || 0) >= product.stock
+  return <article className="product-card tilt" ref={tilt.ref} onMouseMove={tilt.onMouseMove} onMouseLeave={tilt.onMouseLeave}>
+    <div className="product-card__image">
+      <Link to={`/products/${product.id}`} className="product-card__image-link"><ProductImage src={product.image_url} name={product.name} /></Link>
+      {Number(product.discount) > 0 && <span className="product-card__badge">{Number(product.discount)}% off</span>}
+      <button className="product-quick-view" onClick={() => quickView(product.id)} aria-label={`Quick view ${product.name}`}>Quick view <span aria-hidden="true">&#8599;</span></button>
     </div>
-  )
+    <div className="product-card__body"><span className="product-card__category">{product.category_name || 'The bamboo collection'}</span><Link to={`/products/${product.id}`} className="product-card__link"><h3>{product.name}</h3></Link>
+      <div className="product-card__price"><span className="product-card__selling">{formatCurrency(product.selling_price)}</span>{Number(product.discount) > 0 && <del className="product-card__original">{formatCurrency(product.original_price)}</del>}</div>
+      {product.stock <= 0 && <span className="badge badge-muted">Out of stock</span>}
+    </div>
+    {showAddToCart && <button className="btn product-card__add" disabled={atLimit} onClick={() => addToBag(product)}>{product.stock <= 0 ? 'Out of stock' : atLimit ? 'Maximum in bag' : 'Add to bag +'}</button>}
+  </article>
 }
-
-export default ProductCard

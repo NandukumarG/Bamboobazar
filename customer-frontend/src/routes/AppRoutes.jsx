@@ -1,17 +1,18 @@
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import ProtectedRoute from '../components/ProtectedRoute'
 import HomePage from '../pages/HomePage'
-import LoginPage from '../pages/LoginPage'
-import RegisterPage from '../pages/RegisterPage'
-import CategoriesPage from '../pages/CategoriesPage'
-import CategoryProductsPage from '../pages/CategoryProductsPage'
-import ProductsPage from '../pages/ProductsPage'
-import ProductDetailPage from '../pages/ProductDetailPage'
-import CartPage from '../pages/CartPage'
-import CheckoutPage from '../pages/CheckoutPage'
-import PaymentPage from '../pages/PaymentPage'
-import ProfilePage from '../pages/ProfilePage'
+const LoginPage = lazy(() => import('../pages/LoginPage'))
+const RegisterPage = lazy(() => import('../pages/RegisterPage'))
+const CategoriesPage = lazy(() => import('../pages/CategoriesPage'))
+const CategoryProductsPage = lazy(() => import('../pages/CategoryProductsPage'))
+const ProductsPage = lazy(() => import('../pages/ProductsPage'))
+const ProductDetailPage = lazy(() => import('../pages/ProductDetailPage'))
+const CartPage = lazy(() => import('../pages/CartPage'))
+const CheckoutPage = lazy(() => import('../pages/CheckoutPage'))
+const PaymentPage = lazy(() => import('../pages/PaymentPage'))
+const ProfilePage = lazy(() => import('../pages/ProfilePage'))
 
 function AppRoutes() {
   return (

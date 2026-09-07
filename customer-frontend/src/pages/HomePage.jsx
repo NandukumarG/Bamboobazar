@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import * as categoryService from '../services/category.service'
 import * as productService from '../services/product.service'
 import CategoryTile from '../components/CategoryTile'
-import ProductCard from '../components/ProductCard'
+import HomeProductEdit from '../components/HomeProductEdit'
+import HeroGallery from '../components/HeroGallery'
 import Loader from '../components/Loader'
 import Reveal from '../components/Reveal'
 import BambooScene from '../components/BambooScene'
-import heroBg from '../assets/hero-bg.webp'
+import BambooGrove from '../components/BambooGrove'
 import storyImage from '../assets/aboutus-1.webp'
 import bannerImage from '../assets/aboutus-2.webp'
 
@@ -71,7 +72,6 @@ function HomePage() {
       .finally(() => setDataLoading(false))
   }, [])
 
-  const bestSellers = products.slice(0, 4)
 
   // Fall back to a representative product photo only when the category has
   // no image of its own set in the admin panel.
@@ -86,6 +86,7 @@ function HomePage() {
     <div>
       <section className="hero">
         <div className="hero__content">
+          <BambooGrove ambient />
           <span className="eyebrow"><span className="status-dot" /> Rooted in nature. Made for living.</span>
           <h1>Make room<br />for <em>natural</em><br /> beauty.</h1>
           <p>Thoughtfully crafted bamboo pieces that bring warmth, character, and a little more nature to your everyday.</p>
@@ -95,11 +96,7 @@ function HomePage() {
           </div>
           <div className="hero-note"><span aria-hidden="true">&#10035;</span><span>Natural materials.<br /><strong>Extraordinary everyday living.</strong></span></div>
         </div>
-        <div className="hero__media">
-          <img className="hero__photograph" src={heroBg} alt="Bamboo furniture and a vase in a warmly lit natural interior" fetchPriority="high" />
-          <div className="hero__image-label"><span>A slower way to live.</span><small>THE BAMBOO COLLECTION</small></div>
-          <a href="#material-studio" className="hero__floating-note"><span aria-hidden="true">&#8599;</span><div>Nature takes shape<small>Explore our interactive studio</small></div></a>
-        </div>
+        <HeroGallery />
       </section>
       <div className="values-ribbon"><span>Thoughtfully designed</span><i aria-hidden="true">&#10035;</i><span>Inspired by nature</span><i aria-hidden="true">&#10035;</i><span>Made for your everyday</span><i aria-hidden="true">&#10035;</i><span>Crafted with care</span></div>
 
@@ -125,25 +122,9 @@ function HomePage() {
         )}
       </section>
 
-      <section className="section">
-        <Reveal className="section-heading" as="div">
-          <span className="eyebrow">The everyday edit</span><h2>Small details. Big difference.</h2><p>Discover something beautiful for your space.</p>
-        </Reveal>
-        {dataLoading ? (
-          <Loader label="Loading products…" />
-        ) : dataError ? (
-          <div className="alert alert-error">{dataError}</div>
-        ) : (
-          <div className="product-grid">
-            {bestSellers.map((product, index) => (
-              <Reveal key={product.id} delay={index * 80}>
-                <ProductCard product={product} showAddToCart />
-              </Reveal>
-            ))}
-            {bestSellers.length === 0 && <p>No products available yet.</p>}
-          </div>
-        )}
-      </section>
+      <HomeProductEdit products={products} categories={categories} loading={dataLoading} error={dataError} />
+
+      <BambooGrove />
 
       <div className="section" id="material-studio"><BambooScene /></div>
 

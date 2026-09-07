@@ -34,7 +34,7 @@ function CategoryProductsPage() {
 
       <div className="product-grid">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} showAddToCart />
         ))}
         {products.length === 0 && <p>No products in this category yet.</p>}
       </div>

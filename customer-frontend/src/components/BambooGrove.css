@@ -1,0 +1,64 @@
+.nature-scene {
+  --scroll-turn: 0deg;
+  --scroll-rise: 0px;
+  --pointer-x: 0deg;
+  --pointer-y: 0deg;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.bamboo-grove { max-width:1192px; margin:24px auto; min-height:550px; display:grid; grid-template-columns:1fr 1fr; border-radius:22px; background:#142f25; color:#f1f1db; }
+.nature-atmosphere { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:-1; }
+.nature-glow { position:absolute; width:75%; aspect-ratio:1; border-radius:50%; background:radial-gradient(ellipse,#91ac5c30,transparent 65%); animation:nature-drift 17s ease-in-out infinite alternate; }
+.nature-glow--one { left:-20%; top:-45%; }
+.nature-glow--two { right:-25%; bottom:-50%; background:radial-gradient(ellipse,#d9b77626,transparent 65%); animation-delay:-8s; }
+.nature-orbit { position:absolute; right:-10%; top:0; width:600px; height:600px; border:1px solid #d3ddb512; border-radius:50%; transform:rotateX(65deg) rotateZ(-25deg); }
+.nature-mote { position:absolute; width:5px; height:5px; border-radius:50%; background:#dbe6a4; opacity:.3; animation:nature-float 9s ease-in-out infinite alternate; animation-delay:calc(var(--i) * -1.7s); }
+.grove-copy { position:relative; z-index:2; padding:85px 0 80px 50px; align-self:center; }
+.grove-copy .eyebrow { color:#b6c793; }
+.grove-copy h2 { color:#f2f0dc; font-family:'Fraunces',Georgia,serif; font-size:clamp(2rem,3.4vw,3rem); font-weight:500; letter-spacing:-.045em; line-height:1.2; }
+.grove-copy h2 em { color:#bdcc96; }
+.grove-copy p { max-width:330px; color:#c2cbb9; font-size:.86rem; line-height:1.9; }
+.grove-scroll-hint { display:block; margin-top:35px; letter-spacing:.17em; font-size:.6rem; color:#b7c797; }
+.grove-window { position:relative; min-height:550px; perspective:900px; }
+.grove-sun { position:absolute; width:220px; height:220px; top:45px; left:22%; border-radius:50%; background:radial-gradient(circle at 38% 35%,#e7db9b,#b7bc7560); opacity:.8; box-shadow:0 0 70px #bec67c15; transform:translateY(var(--scroll-rise)); }
+.grove-trees { position:absolute; inset:75px 50px 55px; transform-style:preserve-3d; transform:rotateX(var(--pointer-y)) rotateY(calc(var(--scroll-turn) + var(--pointer-x))) translateY(var(--scroll-rise)); }
+.bamboo-tree { position:absolute; bottom:0; width:19px; transform-style:preserve-3d; transform:translateZ(var(--depth)) rotate(var(--lean)); transform-origin:bottom center; }
+.bamboo-tree__sway { position:relative; height:100%; transform-origin:bottom center; animation:bamboo-sway 7s ease-in-out infinite alternate; animation-delay:calc(var(--i) * -1.3s); }
+.bamboo-tree__stem { position:absolute; inset:0; border-radius:9px 9px 3px 3px; background:repeating-linear-gradient(0deg,transparent 0 65px,#c4cb86 66px 69px,#314a2b 70px 72px,transparent 73px 77px),linear-gradient(90deg,#213e2c,#79964d 38%,#a3b365 55%,#486837 90%); box-shadow:inset 2px 0 #c7d89833,4px 4px 8px #081b2530; }
+.bamboo-branch { position:absolute; left:8px; top:calc(12% + var(--branch) * 25%); width:105px; height:45px; border-top:2px solid #829958; border-radius:50%; transform:scaleX(var(--side)) rotate(-30deg); transform-origin:0 0; }
+.bamboo-leaf { position:absolute; left:calc(var(--leaf) * 19px); top:-4px; width:48px; height:12px; border-radius:0 100% 0 100%; background:linear-gradient(170deg,#a7bc72,#527c41 65%,#375b35); transform:rotate(calc(-45deg + var(--leaf) * 19deg)); transform-origin:left center; box-shadow:inset 0 1px #c3d59840; }
+.bamboo-leaf:nth-child(even) { top:3px; transform:rotate(55deg); background:linear-gradient(160deg,#92ad62,#39613a); }
+.grove-ground { position:absolute; bottom:25px; left:5%; right:5%; height:45px; background:radial-gradient(ellipse,#081e17a6,transparent 70%); }
+.grove-caption { position:absolute; bottom:23px; left:0; right:0; text-align:center; font-size:.55rem; letter-spacing:.2em; color:#a4b58c; }
+.nature-motion-toggle { position:absolute; bottom:19px; left:26px; z-index:3; min-height:36px; padding:7px 12px; border:1px solid #aab99460; border-radius:30px; background:#173629; color:#dbe4c9; font-size:.65rem; cursor:pointer; }
+.nature-motion-toggle:hover { background:#35563b; }
+.nature-scene[data-moving='false'] .nature-glow,.nature-scene[data-moving='false'] .nature-mote,.nature-scene[data-moving='false'] .bamboo-tree__sway { animation-play-state:paused; }
+.nature-scene--ambient { position:absolute; inset:0; z-index:0; pointer-events:none; }
+.nature-scene--ambient .nature-atmosphere { z-index:0; }
+.nature-scene--ambient .nature-glow { width:100%; background:radial-gradient(ellipse,#a6b77b38,transparent 67%); }
+.nature-scene--ambient .nature-glow--two { background:radial-gradient(ellipse,#d4b88435,transparent 67%); }
+.nature-scene--ambient .nature-mote { width:15px; height:6px; border-radius:0 100% 0 100%; background:#63834a; opacity:.14; }
+.nature-scene--ambient .nature-orbit { border-color:#8597671a; }
+.nature-scene--ambient .nature-motion-toggle { pointer-events:auto; left:auto; right:16px; bottom:10px; min-height:30px; font-size:.58rem; background:#f4f4e9; color:#5e7053; border-color:#d7dfcb; }
+.hero__content { isolation:isolate; }
+.hero__content>.eyebrow,.hero__content>.hero-note { position:relative; }
+.hero__content>.nature-scene~* { z-index:1; }
+@keyframes nature-drift { from { transform:translate3d(-3%,-3%,0) scale(.95); } to { transform:translate3d(12%,9%,0) scale(1.12); } }
+@keyframes nature-float { from { transform:translate3d(0,10px,0) rotate(-20deg); } to { transform:translate3d(25px,-32px,0) rotate(35deg); } }
+@keyframes bamboo-sway { from { transform:rotate(-1.3deg); } to { transform:rotate(1.3deg); } }
+@media (max-width:860px) { .bamboo-grove { margin:18px 24px; } .grove-copy { padding-left:30px; } .grove-trees { left:20px; right:35px; } }
+@media (max-width:640px) {
+ .bamboo-grove { grid-template-columns:1fr; margin:12px 18px; }
+ .grove-copy { padding:35px 26px 0; } .grove-copy p { max-width:none; }
+ .grove-scroll-hint { margin-top:20px; } .grove-window { min-height:390px; }
+ .grove-trees { inset:50px 70px 65px; } .grove-sun { width:170px; height:170px; left:25%; top:20px; }
+ .bamboo-tree { width:15px; } .bamboo-branch { width:80px; } .bamboo-leaf { width:36px; left:calc(var(--leaf) * 14px); }
+ .grove-caption { bottom:60px; } .nature-motion-toggle { bottom:16px; }
+ .grove-ground { bottom:60px; }
+}
+@media (prefers-reduced-motion:reduce) {
+ .nature-scene * { animation:none!important; }
+ .grove-trees,.grove-sun { transform:none!important; }
+ .nature-motion-toggle { display:none; }
+}
