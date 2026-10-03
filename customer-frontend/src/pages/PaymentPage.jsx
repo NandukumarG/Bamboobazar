@@ -144,14 +144,19 @@ function PaymentPage() {
 
   if (!order) {
     return (
-      <div className="page">
-        <h1>Payment</h1>
-        <div className="alert alert-error">
-          No order details found. Please check your account or contact support.
+      <div className="page payment-page">
+        <div className="payment-header">
+          <span className="eyebrow">Secure checkout</span>
+          <h1>Payment</h1>
         </div>
-        <Link to="/products" className="btn btn-primary">
-          Continue shopping
-        </Link>
+        <div className="card payment-card">
+          <div className="alert alert-error">
+            No order details found. Please check your account or contact support.
+          </div>
+          <Link to="/products" className="btn btn-primary">
+            Continue shopping
+          </Link>
+        </div>
       </div>
     )
   }
@@ -228,19 +233,28 @@ function PaymentPage() {
     return (
       <>
         {renderCelebrationModal(paid, paid.payment_method === 'COD' ? 'Cash on Delivery' : 'Online Payment')}
-        <div className="page" style={{ filter: 'blur(1px)' }}>
-          <h1>Payment Successful</h1>
-          <div className="card">
+        <div className="page payment-page" style={{ filter: 'blur(1px)' }}>
+          <div className="payment-header">
+            <span className="eyebrow">Payment complete</span>
+            <h1>Payment Successful</h1>
+          </div>
+          <div className="card payment-card">
             <div className="alert alert-success">Order Confirmed</div>
-            <p>
-              Order Number: <strong>{paid.order_number || paid.orderNumber}</strong>
-            </p>
-            <p>
-              Amount: <strong>{formatCurrency(paid.total)}</strong>
-            </p>
-            <Link to="/products" className="btn btn-primary">
-              Continue shopping
-            </Link>
+            <div className="payment-summary">
+              <div>
+                <p className="payment-label">Order Number</p>
+                <p className="payment-value">{paid.order_number || paid.orderNumber}</p>
+              </div>
+              <div>
+                <p className="payment-label">Amount</p>
+                <p className="payment-value">{formatCurrency(paid.total)}</p>
+              </div>
+            </div>
+            <div className="form-actions">
+              <Link to="/products" className="btn btn-primary">
+                Continue shopping
+              </Link>
+            </div>
           </div>
         </div>
       </>
@@ -251,23 +265,31 @@ function PaymentPage() {
     return (
       <>
         {renderCelebrationModal(order, 'Cash on Delivery')}
-        <div className="page" style={{ filter: 'blur(1px)' }}>
-          <h1>Order Confirmed</h1>
-          <div className="card">
+        <div className="page payment-page" style={{ filter: 'blur(1px)' }}>
+          <div className="payment-header">
+            <span className="eyebrow">Order placed</span>
+            <h1>Order Confirmed</h1>
+          </div>
+          <div className="card payment-card">
             <div className="alert alert-success">Cash on Delivery</div>
-            <p>
-              Order Number: <strong>{order.order_number}</strong>
-            </p>
-            <p>
-              Amount to pay on delivery: <strong>{formatCurrency(order.total)}</strong>
-            </p>
+            <div className="payment-summary">
+              <div>
+                <p className="payment-label">Order Number</p>
+                <p className="payment-value">{order.order_number}</p>
+              </div>
+              <div>
+                <p className="payment-label">Amount</p>
+                <p className="payment-value">{formatCurrency(order.total)}</p>
+              </div>
+            </div>
             <p className="page-subtitle">
-              Please keep the exact amount ready — payment is collected in cash when your order
-              arrives.
+              Please keep the exact amount ready — payment is collected in cash when your order arrives.
             </p>
-            <Link to="/products" className="btn btn-primary">
-              Continue shopping
-            </Link>
+            <div className="form-actions">
+              <Link to="/products" className="btn btn-primary">
+                Continue shopping
+              </Link>
+            </div>
           </div>
         </div>
       </>
@@ -275,37 +297,124 @@ function PaymentPage() {
   }
 
   return (
-    <div className="page">
-      <h1>Payment</h1>
+    <div className="page payment-page">
+      <div className="payment-hero">
+        <span className="payment-eyebrow">Secure Checkout</span>
+        <h1>Payment</h1>
+        <p>Complete your payment securely to confirm your order.</p>
+      </div>
 
-      <div className="card">
-        {(status === 'failed' || status === 'cancelled') && (
-          <div className="alert alert-error">
-            {status === 'cancelled' ? 'Payment Cancelled' : 'Payment Failed'}
-            {error && <p style={{ margin: '0.4rem 0 0' }}>{error}</p>}
+      {(status === 'failed' || status === 'cancelled') && (
+        <div className="alert alert-error payment-alert">
+          {status === 'cancelled' ? 'Payment Cancelled' : 'Payment Failed'}
+          {error && <p style={{ margin: '0.4rem 0 0' }}>{error}</p>}
+        </div>
+      )}
+
+      <div className="payment-layout">
+        <aside className="payment-summary-card">
+          <div className="payment-summary-header">
+            <span className="payment-icon">◫</span>
+            <h2>Order Summary</h2>
           </div>
-        )}
 
-        <p>
-          Order Number: <strong>{order.order_number}</strong>
-        </p>
-        <p>
-          Amount to pay: <strong>{formatCurrency(order.total)}</strong>
-        </p>
+          <div className="payment-summary-row">
+            <span className="payment-summary-label">Order Number</span>
+            <strong>{order.order_number}</strong>
+          </div>
 
-        <div className="form-actions">
+          <div className="payment-summary-row payment-summary-row--amount">
+            <span className="payment-summary-label">Amount</span>
+            <span className="payment-total">{formatCurrency(order.total)}</span>
+          </div>
+
+          <p className="payment-summary-note">Your payment is secured and processed with Razorpay.</p>
+
+          <div className="payment-trust-mini">
+            <div className="mini-trust-item">
+              <span className="mini-icon">⛨</span>
+              <span>Secure Payment</span>
+            </div>
+            <div className="mini-trust-item">
+              <span className="mini-icon">▣</span>
+              <span>Razorpay</span>
+            </div>
+            <div className="mini-trust-item">
+              <span className="mini-icon">◌</span>
+              <span>Your Data is Safe</span>
+            </div>
+          </div>
+        </aside>
+
+        <section className="payment-panel">
+          <div className="payment-panel-visual">
+            <div className="shield-badge">
+              <span>🔒</span>
+            </div>
+          </div>
+
+          <div className="payment-panel-copy">
+            <h3>Secure Payment</h3>
+            <p>
+              You&apos;ll be redirected to Razorpay&apos;s secure checkout to choose your preferred
+              payment method and complete your purchase.
+            </p>
+          </div>
+
+          <div className="payment-benefits">
+            <div className="benefit-item">
+              <span className="benefit-icon">🔒</span>
+              <span>Encrypted checkout</span>
+            </div>
+            <div className="benefit-item">
+              <span className="benefit-icon">💳</span>
+              <span>Multiple payment options</span>
+            </div>
+            <div className="benefit-item">
+              <span className="benefit-icon">✓</span>
+              <span>Secure Razorpay gateway</span>
+            </div>
+          </div>
+
+          <div className="payment-powered">
+            <span>Powered by</span>
+            <strong>Razorpay</strong>
+          </div>
+
           <button
             type="button"
-            className="btn btn-primary"
+            className="payment-action-btn"
             disabled={status === 'processing'}
             onClick={handlePayNow}
           >
-            {status === 'processing'
-              ? 'Starting payment…'
-              : status === 'failed' || status === 'cancelled'
-                ? 'Try Again'
-                : 'Pay Now'}
+            <span className="payment-action-lock">🔒</span>
+            <span>{status === 'processing' ? 'Starting payment…' : status === 'failed' || status === 'cancelled' ? 'Try Again' : `Pay ${formatCurrency(order.total)}`}</span>
+            <span className="payment-action-arrow">→</span>
           </button>
+
+          <div className="payment-security-note">
+            <span className="security-check">✓</span>
+            <span>256-bit SSL encrypted payment by Razorpay</span>
+          </div>
+        </section>
+      </div>
+
+      <div className="payment-trust-bar">
+        <div className="trust-item">
+          <span className="trust-icon">✿</span>
+          <span>Natural Living</span>
+        </div>
+        <div className="trust-item">
+          <span className="trust-icon">▣</span>
+          <span>Pan India Shipping</span>
+        </div>
+        <div className="trust-item">
+          <span className="trust-icon">✓</span>
+          <span>Sustainable Products</span>
+        </div>
+        <div className="trust-item">
+          <span className="trust-icon">❤</span>
+          <span>Support Small Artisans</span>
         </div>
       </div>
     </div>
