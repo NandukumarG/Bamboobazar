@@ -53,29 +53,10 @@ const updateStatus = async (id, status, client = pool) => {
   return result.rows[0]
 }
 
-// A created shipment means the parcel has been handed to the courier, so
-// this also advances the order to SHIPPED.
-const saveShipment = async (
-  id,
-  { shiprocketOrderId, shipmentId, awbCode, courierName, trackingUrl, invoiceUrl },
-  client = pool
-) => {
-  const result = await client.query(
-    `UPDATE orders
-     SET shiprocket_order_id = $1, shiprocket_shipment_id = $2, awb_code = $3,
-         courier_name = $4, tracking_url = $5, invoice_url = $6, status = 'SHIPPED'
-     WHERE id = $7
-     RETURNING *`,
-    [shiprocketOrderId, shipmentId, awbCode, courierName, trackingUrl, invoiceUrl, id]
-  )
-  return result.rows[0]
-}
-
 module.exports = {
   createOrder,
   findOrdersByUser,
   findAllOrders,
   findOrderById,
   updateStatus,
-  saveShipment,
 }

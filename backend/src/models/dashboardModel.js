@@ -1,6 +1,6 @@
 const pool = require('../config/db')
 
-const REVENUE_STATUSES = ['PAID', 'SHIPPED', 'DELIVERED']
+const REVENUE_STATUSES = ['PAID']
 
 const getStats = async () => {
   const result = await pool.query(

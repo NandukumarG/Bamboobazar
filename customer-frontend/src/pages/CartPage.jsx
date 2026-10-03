@@ -3,8 +3,6 @@ import { useCart } from '../context/CartContext'
 import { formatCurrency } from '../utils/currency'
 import checkoutBg from '../assets/checkout.webp'
 
-// Display-only estimate; the backend computes the authoritative shipping and
-// total from PostgreSQL when the order is actually placed.
 const SHIPPING_FLAT_RATE = 0
 
 const LeafIcon = () => (
@@ -168,12 +166,6 @@ function CartPage() {
                 <BagIcon /> Subtotal
               </span>
               <span>{formatCurrency(subtotal)}</span>
-            </div>
-            <div>
-              <span className="order-summary__label">
-                <TruckIcon /> Shipping
-              </span>
-              <span>{formatCurrency(SHIPPING_FLAT_RATE)}</span>
             </div>
             <div className="order-summary__total">
               <span className="order-summary__label">

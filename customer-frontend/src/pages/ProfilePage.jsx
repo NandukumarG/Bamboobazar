@@ -157,7 +157,7 @@ function ProfilePage() {
         </div>
 
         <div className="card">
-          <h2>Shipping Address</h2>
+          <h2>Address on file</h2>
           {lastOrder ? (
             <>
               <p className="page-subtitle">

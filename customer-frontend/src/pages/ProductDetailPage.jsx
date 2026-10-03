@@ -114,7 +114,7 @@ function ProductDetailPage() {
         </div>
         <div className="product-facts">
           <details><summary>About this piece</summary><p>{product.description || 'Explore our collection of bamboo pieces for everyday living.'}</p></details>
-          <details><summary>Delivery &amp; payment</summary><p>Enter your pincode at checkout to see delivery availability and shipping charges. Choose online payment or cash on delivery when placing your order.</p></details>
+          <details><summary>Payment &amp; checkout</summary><p>Choose online payment or cash on delivery when placing your order, and keep track of your order status in your profile.</p></details>
           <details><summary>Your order, in one place</summary><p>Sign in to view your order history and status in your profile after checkout.</p></details>
         </div>
       </div>

@@ -32,8 +32,6 @@ function Navbar() {
 
   return (
     <>
-      <div className="announcement-bar">Free shipping on orders above ₹2,000</div>
-
       <header className="navbar">
         <div className="navbar__inner">
           <Link to="/" className="navbar__brand">

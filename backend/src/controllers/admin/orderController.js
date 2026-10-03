@@ -3,9 +3,8 @@ const ApiError = require('../../utils/ApiError')
 const orderModel = require('../../models/orderModel')
 const orderItemModel = require('../../models/orderItemModel')
 const paymentModel = require('../../models/paymentModel')
-const shipmentService = require('../../services/shipmentService')
 
-const ORDER_STATUSES = ['PENDING', 'PAID', 'CANCELLED', 'SHIPPED', 'DELIVERED']
+const ORDER_STATUSES = ['PENDING', 'PAID', 'CANCELLED']
 
 const listOrders = asyncHandler(async (req, res) => {
   const orders = await orderModel.findAllOrders()
@@ -45,12 +44,4 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
   res.json({ order })
 })
 
-const createShipment = asyncHandler(async (req, res) => {
-  const id = Number(req.params.id)
-  if (!Number.isInteger(id)) throw new ApiError(400, 'Invalid order id')
-
-  const order = await shipmentService.createShipment(id)
-  res.json({ order })
-})
-
-module.exports = { listOrders, getOrder, updateOrderStatus, createShipment }
+module.exports = { listOrders, getOrder, updateOrderStatus }

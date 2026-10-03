@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import * as orderService from '../services/orderService'
 import { formatCurrency } from '../utils/currency'
 
-const STATUSES = ['PENDING', 'PAID', 'CANCELLED', 'SHIPPED', 'DELIVERED']
+const STATUSES = ['PENDING', 'PAID', 'CANCELLED']
 
 function OrderDetailPage() {
   const { id } = useParams()
@@ -11,8 +11,6 @@ function OrderDetailPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
-  const [shipmentError, setShipmentError] = useState('')
-  const [creatingShipment, setCreatingShipment] = useState(false)
 
   const loadOrder = () => {
     setLoading(true)
@@ -37,19 +35,6 @@ function OrderDetailPage() {
       setError(err.response?.data?.message || 'Failed to update status')
     } finally {
       setUpdating(false)
-    }
-  }
-
-  const handleCreateShipment = async () => {
-    setShipmentError('')
-    setCreatingShipment(true)
-    try {
-      const updated = await orderService.createShipment(id)
-      setOrder(updated)
-    } catch (err) {
-      setShipmentError(err.response?.data?.message || 'Failed to create shipment')
-    } finally {
-      setCreatingShipment(false)
     }
   }
 
@@ -102,46 +87,6 @@ function OrderDetailPage() {
           )}
         </section>
 
-        <section className="card">
-          <h2>Shipment</h2>
-          {order.awb_code ? (
-            <>
-              <p>
-                {order.courier_name} — AWB {order.awb_code}
-              </p>
-              <p>
-                <a href={order.tracking_url} target="_blank" rel="noreferrer">
-                  Track shipment
-                </a>
-              </p>
-              <p>
-                <a href={order.invoice_url} target="_blank" rel="noreferrer">
-                  View invoice
-                </a>
-              </p>
-            </>
-          ) : (
-            <>
-              <p>No shipment created yet.</p>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleCreateShipment}
-                disabled={
-                  creatingShipment ||
-                  order.status === 'CANCELLED' ||
-                  (order.payment_method === 'ONLINE' && order.status !== 'PAID')
-                }
-              >
-                {creatingShipment ? 'Creating shipment…' : 'Create shipment & invoice'}
-              </button>
-              {order.payment_method === 'ONLINE' && order.status !== 'PAID' && (
-                <p className="field-error">Order must be paid before a shipment can be created.</p>
-              )}
-              {shipmentError && <p className="field-error">{shipmentError}</p>}
-            </>
-          )}
-        </section>
       </div>
 
       <section className="card">
@@ -171,10 +116,6 @@ function OrderDetailPage() {
           <div>
             <span>Subtotal</span>
             <span>{formatCurrency(order.subtotal)}</span>
-          </div>
-          <div>
-            <span>Shipping</span>
-            <span>{formatCurrency(order.shipping)}</span>
           </div>
           <div className="order-summary__total">
             <span>Total</span>

@@ -86,7 +86,7 @@ CREATE TABLE orders (
   shipping       NUMERIC(10, 2) NOT NULL DEFAULT 0 CHECK (shipping >= 0),
   total          NUMERIC(10, 2) NOT NULL CHECK (total >= 0),
   status         VARCHAR(20) NOT NULL DEFAULT 'PENDING'
-                 CHECK (status IN ('PENDING', 'PAID', 'CANCELLED', 'SHIPPED', 'DELIVERED')),
+                 CHECK (status IN ('PENDING', 'PAID', 'CANCELLED')),
   payment_method VARCHAR(20) NOT NULL DEFAULT 'ONLINE'
                  CHECK (payment_method IN ('ONLINE', 'COD')),
   customer_name  VARCHAR(150) NOT NULL,
@@ -96,12 +96,6 @@ CREATE TABLE orders (
   city           VARCHAR(100) NOT NULL,
   state          VARCHAR(100) NOT NULL,
   pincode        VARCHAR(15) NOT NULL,
-  shiprocket_order_id     BIGINT,
-  shiprocket_shipment_id  BIGINT,
-  awb_code                VARCHAR(50),
-  courier_name            VARCHAR(100),
-  tracking_url            TEXT,
-  invoice_url             TEXT,
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at     TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

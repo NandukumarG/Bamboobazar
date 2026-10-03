@@ -55,7 +55,7 @@ function Bag({ onClose }) {
           <div className="bag-item__controls"><div className="qty-stepper"><button aria-label={`Decrease ${item.name} quantity`} disabled={item.quantity <= 1} onClick={() => updateQuantity(item.productId, item.quantity - 1)}>-</button><output aria-label={`${item.name} quantity`}>{item.quantity}</output><button aria-label={`Increase ${item.name} quantity`} disabled={item.quantity >= item.stock} onClick={() => updateQuantity(item.productId, item.quantity + 1)}>+</button></div><button className="bag-remove" aria-label={`Remove ${item.name}`} onClick={() => removeItem(item.productId)}>Remove</button></div>
         </div>
       </article>)}</div>
-      <div className="bag-summary"><div aria-live="polite"><span>Subtotal</span><strong>{formatCurrency(subtotal)}</strong></div><p>Shipping is calculated at checkout.</p><Link to="/checkout" className="btn btn-primary" onClick={onClose}>Continue to checkout &#8599;</Link><Link to="/cart" className="text-link" onClick={onClose}>View full cart</Link></div></>}
+      <div className="bag-summary"><div aria-live="polite"><span>Subtotal</span><strong>{formatCurrency(subtotal)}</strong></div><Link to="/checkout" className="btn btn-primary" onClick={onClose}>Continue to checkout &#8599;</Link><Link to="/cart" className="text-link" onClick={onClose}>View full cart</Link></div></>}
   </ShopDialog>
 }
 

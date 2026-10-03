@@ -1,13 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import * as orderService from '../services/order.service'
-import { getShippingQuote } from '../services/shipping.service'
 import { formatCurrency } from '../utils/currency'
 import checkoutBg from '../assets/checkout.webp'
-
-const PINCODE_REGEX = /^\d{6}$/
 
 const LeafIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
@@ -72,42 +69,7 @@ function CheckoutPage() {
   const [errors, setErrors] = useState([])
   const [submitting, setSubmitting] = useState(false)
 
-  const [shipping, setShipping] = useState(null)
-  const [shippingLoading, setShippingLoading] = useState(false)
-  const [shippingError, setShippingError] = useState('')
-
-  useEffect(() => {
-    if (!PINCODE_REGEX.test(form.pincode)) {
-      setShipping(null)
-      setShippingError('')
-      return
-    }
-
-    let cancelled = false
-    setShippingLoading(true)
-    setShippingError('')
-
-    const timer = setTimeout(async () => {
-      try {
-        const fee = await getShippingQuote({ pincode: form.pincode, paymentMethod })
-        if (!cancelled) setShipping(fee)
-      } catch (err) {
-        if (!cancelled) {
-          setShipping(null)
-          setShippingError(err.response?.data?.message || 'Delivery is not available for this pincode.')
-        }
-      } finally {
-        if (!cancelled) setShippingLoading(false)
-      }
-    }, 500)
-
-    return () => {
-      cancelled = true
-      clearTimeout(timer)
-    }
-  }, [form.pincode, paymentMethod])
-
-  const total = subtotal + (shipping || 0)
+  const total = subtotal
 
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }))
@@ -252,7 +214,7 @@ function CheckoutPage() {
             <button
               type="submit"
               className="btn btn-dark pill-cta"
-              disabled={submitting || shippingLoading || !shipping}
+              disabled={submitting}
             >
               <span>{submitting ? 'Placing order…' : 'Place order'}</span>
               <span className="pill-cta__arrow">
@@ -288,21 +250,6 @@ function CheckoutPage() {
                 </span>
                 <span>{formatCurrency(subtotal)}</span>
               </div>
-              <div>
-                <span className="order-summary__label">
-                  <TruckIcon /> Shipping
-                </span>
-                <span>
-                  {shippingLoading
-                    ? 'Calculating…'
-                    : shippingError
-                      ? '—'
-                      : shipping !== null
-                        ? formatCurrency(shipping)
-                        : 'Enter pincode'}
-                </span>
-              </div>
-              {shippingError && <p className="field-error">{shippingError}</p>}
               <div className="order-summary__total">
                 <span className="order-summary__label">
                   <TagIcon /> Total

@@ -21,7 +21,7 @@ const FOOTER_LINKS = [
     heading: 'Customer Service',
     items: [
       { label: 'FAQs' },
-      { label: 'Shipping & Delivery' },
+      { label: 'Delivery Info' },
       { label: 'Returns & Refunds' },
       { label: 'Track Your Order' },
     ],
